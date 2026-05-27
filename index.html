@@ -1,0 +1,1092 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSTZap — India's Simplest GST Return Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0D1B40;
+    --teal: #028090;
+    --teal2: #02C39A;
+    --gold: #F9C744;
+    --white: #FFFFFF;
+    --off: #F4F7F9;
+    --text: #1A2640;
+    --muted: #64748B;
+    --border: #E2E8F0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    background: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw; height: 68px;
+    background: rgba(13,27,64,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(2,192,154,0.15);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
+    color: var(--white); text-decoration: none; letter-spacing: -0.5px;
+  }
+
+  .logo-icon {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--teal), var(--teal2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a {
+    color: rgba(255,255,255,0.7); text-decoration: none;
+    font-size: 14px; font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal2); }
+
+  .nav-cta {
+    background: var(--teal2); color: var(--navy) !important;
+    font-weight: 600 !important; padding: 9px 22px;
+    border-radius: 8px; transition: transform 0.15s, background 0.2s !important;
+  }
+  .nav-cta:hover { background: #03D9AD !important; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center;
+    padding: 110px 5vw 80px;
+  }
+
+  /* Animated mesh background */
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 30%, rgba(2,128,144,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, rgba(2,195,154,0.1) 0%, transparent 55%),
+      radial-gradient(ellipse 30% 30% at 90% 80%, rgba(249,199,68,0.06) 0%, transparent 50%);
+    animation: meshShift 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes meshShift {
+    0% { opacity: 0.7; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.04); }
+  }
+
+  /* Grid overlay */
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(2,192,154,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(2,192,154,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 640px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(2,195,154,0.12); border: 1px solid rgba(2,195,154,0.3);
+    color: var(--teal2); font-size: 13px; font-weight: 500;
+    padding: 6px 14px; border-radius: 100px; margin-bottom: 28px;
+    animation: fadeSlideUp 0.6s ease both;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal2);
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(38px, 6vw, 64px);
+    font-weight: 800; line-height: 1.05; letter-spacing: -2px;
+    color: var(--white); margin-bottom: 20px;
+    animation: fadeSlideUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--teal2), #7FFFD4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 18px; font-weight: 300; line-height: 1.65;
+    color: rgba(255,255,255,0.65); margin-bottom: 38px; max-width: 520px;
+    animation: fadeSlideUp 0.6s 0.2s ease both;
+  }
+
+  .hero-cta-row {
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+    animation: fadeSlideUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--teal2); color: var(--navy);
+    font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600;
+    padding: 14px 28px; border-radius: 10px; border: none; cursor: pointer;
+    text-decoration: none; transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 24px rgba(2,195,154,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(2,195,154,0.45); }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: rgba(255,255,255,0.7); font-size: 15px; font-weight: 400;
+    text-decoration: none; padding: 14px 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--white); border-color: var(--white); }
+
+  .hero-stats {
+    display: flex; gap: 40px; margin-top: 52px;
+    padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);
+    animation: fadeSlideUp 0.6s 0.4s ease both;
+  }
+
+  .stat-item { display: flex; flex-direction: column; gap: 4px; }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 700;
+    color: var(--teal2); letter-spacing: -1px;
+  }
+  .stat-lbl { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 300; }
+
+  /* Hero visual */
+  .hero-visual {
+    position: absolute; right: 4vw; top: 50%; transform: translateY(-50%);
+    width: min(460px, 42vw); z-index: 2;
+    animation: fadeSlideLeft 0.8s 0.3s ease both;
+  }
+
+  .dashboard-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(2,192,154,0.2);
+    border-radius: 16px; padding: 24px;
+    backdrop-filter: blur(20px);
+  }
+
+  .dash-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .dash-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: var(--white); }
+  .dash-badge {
+    background: rgba(2,195,154,0.15); color: var(--teal2);
+    font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 100px;
+    letter-spacing: 0.5px;
+  }
+
+  .dash-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .dash-row:last-child { border-bottom: none; }
+
+  .dash-label { font-size: 13px; color: rgba(255,255,255,0.5); }
+  .dash-val { font-size: 14px; font-weight: 500; color: var(--white); }
+  .dash-val.green { color: var(--teal2); }
+  .dash-val.amber { color: var(--gold); }
+  .dash-val.red { color: #FC8181; }
+
+  .progress-bar {
+    width: 100%; height: 4px; background: rgba(255,255,255,0.08);
+    border-radius: 4px; margin-top: 16px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--teal), var(--teal2));
+    border-radius: 4px; width: 0;
+    animation: fillBar 1.5s 1s ease forwards;
+  }
+  @keyframes fillBar { to { width: 73%; } }
+
+  .progress-lbl {
+    display: flex; justify-content: space-between; margin-top: 6px;
+    font-size: 11px; color: rgba(255,255,255,0.4);
+  }
+
+  .mini-cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;
+  }
+  .mini-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px; padding: 14px;
+  }
+  .mini-card-val { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--teal2); }
+  .mini-card-lbl { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+  .floating-notif {
+    position: absolute; bottom: -18px; right: -16px;
+    background: var(--gold); color: var(--navy);
+    border-radius: 12px; padding: 10px 16px;
+    font-size: 12px; font-weight: 600; white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(249,199,68,0.4);
+    animation: floatBob 3s ease-in-out infinite;
+  }
+
+  @keyframes floatBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeSlideLeft {
+    from { opacity: 0; transform: translate(30px, -50%); }
+    to { opacity: 1; transform: translate(0, -50%); }
+  }
+
+  /* ── HOW IT WORKS ── */
+  .section {
+    padding: 100px 5vw;
+  }
+
+  .section-tag {
+    display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 14px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700; letter-spacing: -1.5px; color: var(--navy); line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    font-size: 17px; font-weight: 300; color: var(--muted);
+    max-width: 520px; line-height: 1.7; margin-bottom: 56px;
+  }
+
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    position: relative;
+  }
+
+  .steps-grid::after {
+    content: '';
+    position: absolute; top: 32px; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(90deg, var(--teal2), var(--teal));
+    z-index: 0;
+    opacity: 0.25;
+  }
+
+  .step {
+    position: relative; z-index: 1; padding: 0 20px; text-align: center;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .step.visible { opacity: 1; transform: translateY(0); }
+
+  .step-num {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--navy); border: 2px solid var(--teal2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700;
+    color: var(--teal2); margin: 0 auto 20px;
+    box-shadow: 0 0 0 8px rgba(2,195,154,0.08);
+  }
+
+  .step h3 {
+    font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 600;
+    color: var(--navy); margin-bottom: 10px;
+  }
+  .step p { font-size: 14px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+  /* ── FEATURES ── */
+  .features-section { background: var(--navy); padding: 100px 5vw; }
+  .features-section .section-title { color: var(--white); }
+  .features-section .section-sub { color: rgba(255,255,255,0.5); }
+  .features-section .section-tag { color: var(--teal2); }
+
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  }
+
+  .feature-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 36px 32px; position: relative; overflow: hidden;
+    transition: background 0.3s, border-color 0.3s;
+    cursor: default;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s, border-color 0.3s;
+  }
+  .feature-card.visible { opacity: 1; transform: translateY(0); }
+  .feature-card:hover { background: rgba(2,195,154,0.06); border-color: rgba(2,195,154,0.25); }
+
+  .feature-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(2,195,154,0.08) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: rgba(2,195,154,0.12); border: 1px solid rgba(2,195,154,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 20px;
+  }
+
+  .feature-card h3 {
+    font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 600;
+    color: var(--white); margin-bottom: 10px;
+  }
+  .feature-card p { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.7; font-weight: 300; }
+
+  .feature-tag {
+    display: inline-block; background: rgba(249,199,68,0.15); color: var(--gold);
+    font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 100px; margin-top: 16px; letter-spacing: 0.5px;
+  }
+
+  /* ── PRICING ── */
+  .pricing-section { padding: 100px 5vw; background: var(--off); }
+
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; max-width: 960px; margin: 0 auto;
+  }
+
+  .price-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 20px; padding: 36px 32px; position: relative;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s;
+  }
+  .price-card.visible { opacity: 1; transform: translateY(0); }
+  .price-card:hover { box-shadow: 0 16px 48px rgba(13,27,64,0.1); }
+  .price-card.popular {
+    border-color: var(--teal2); border-width: 2px;
+    box-shadow: 0 8px 32px rgba(2,195,154,0.18);
+  }
+
+  .popular-tag {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--teal2); color: var(--navy);
+    font-size: 12px; font-weight: 700; padding: 5px 18px;
+    border-radius: 100px; letter-spacing: 0.5px; white-space: nowrap;
+  }
+
+  .plan-name {
+    font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700;
+    color: var(--navy); margin-bottom: 6px;
+  }
+  .plan-who { font-size: 13px; color: var(--muted); margin-bottom: 24px; font-weight: 300; }
+
+  .plan-price {
+    display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px;
+  }
+  .plan-price .currency { font-size: 20px; font-weight: 600; color: var(--navy); }
+  .plan-price .amount {
+    font-family: 'Syne', sans-serif; font-size: 44px; font-weight: 800;
+    color: var(--teal); letter-spacing: -2px; line-height: 1;
+  }
+  .plan-period { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+
+  .plan-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .plan-features li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14px; color: var(--text); font-weight: 300;
+  }
+  .plan-features li::before {
+    content: '✓'; color: var(--teal2); font-weight: 700;
+    font-size: 14px; flex-shrink: 0; margin-top: 1px;
+  }
+
+  .plan-btn {
+    display: block; text-align: center; margin-top: 32px;
+    padding: 13px; border-radius: 10px; font-size: 15px; font-weight: 600;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .plan-btn.outline {
+    border: 1.5px solid var(--border); color: var(--navy);
+    background: transparent;
+  }
+  .plan-btn.outline:hover { border-color: var(--teal); color: var(--teal); }
+  .plan-btn.filled {
+    background: var(--teal2); color: var(--navy);
+    box-shadow: 0 4px 16px rgba(2,195,154,0.3);
+  }
+  .plan-btn.filled:hover { background: #03D4A8; transform: translateY(-1px); }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section { padding: 100px 5vw; background: var(--white); }
+
+  .testimonials-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+
+  .testimonial {
+    background: var(--off); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .testimonial.visible { opacity: 1; transform: translateY(0); }
+
+  .testimonial-quote {
+    font-size: 15px; color: var(--text); line-height: 1.7;
+    font-weight: 300; font-style: italic; margin-bottom: 20px;
+  }
+  .testimonial-quote::before { content: '"'; font-size: 28px; color: var(--teal); line-height: 0; vertical-align: -10px; margin-right: 2px; }
+
+  .testimonial-author {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .author-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--navy));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--white);
+  }
+  .author-name { font-size: 14px; font-weight: 600; color: var(--navy); }
+  .author-role { font-size: 12px; color: var(--muted); }
+
+  .stars { color: var(--gold); font-size: 13px; letter-spacing: 1px; margin-bottom: 14px; }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    background: var(--navy); padding: 100px 5vw; text-align: center;
+    position: relative; overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 50% 80% at 50% 120%, rgba(2,195,154,0.18) 0%, transparent 60%);
+  }
+
+  .cta-section > * { position: relative; z-index: 1; }
+
+  .cta-section .section-title { color: var(--white); margin: 0 auto 14px; }
+  .cta-section .section-sub { color: rgba(255,255,255,0.5); margin: 0 auto 40px; text-align: center; }
+
+  .cta-input-row {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; max-width: 480px; margin: 0 auto;
+  }
+
+  .cta-input {
+    flex: 1; min-width: 220px; padding: 14px 18px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px; font-size: 15px; color: var(--white);
+    font-family: 'DM Sans', sans-serif; outline: none;
+    transition: border-color 0.2s;
+  }
+  .cta-input::placeholder { color: rgba(255,255,255,0.35); }
+  .cta-input:focus { border-color: var(--teal2); }
+
+  .cta-note { margin-top: 16px; font-size: 13px; color: rgba(255,255,255,0.35); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060E24; padding: 48px 5vw 32px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 32px; margin-bottom: 40px;
+  }
+
+  .footer-brand .nav-logo { margin-bottom: 12px; }
+  .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.35); font-weight: 300; max-width: 260px; line-height: 1.6; }
+
+  .footer-links { display: flex; gap: 48px; flex-wrap: wrap; }
+  .footer-col h4 {
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.6); letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .footer-col a {
+    display: block; font-size: 14px; color: rgba(255,255,255,0.4);
+    text-decoration: none; margin-bottom: 9px; font-weight: 300;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--teal2); }
+
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+    padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-copy { font-size: 13px; color: rgba(255,255,255,0.25); }
+  .footer-gstin { font-size: 13px; color: rgba(255,255,255,0.25); }
+
+  /* ── COMPETITOR COMPARISON ── */
+  .comparison-section { padding: 100px 5vw; }
+
+  .compare-table {
+    width: 100%; border-collapse: collapse; margin-top: 0;
+    background: var(--white); border-radius: 16px; overflow: hidden;
+    box-shadow: 0 4px 32px rgba(13,27,64,0.08);
+  }
+
+  .compare-table th {
+    padding: 18px 24px; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+    text-align: center; background: var(--navy); color: rgba(255,255,255,0.7);
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .compare-table th:first-child { text-align: left; }
+  .compare-table th.highlight { color: var(--teal2); background: #0F2050; }
+
+  .compare-table td {
+    padding: 15px 24px; font-size: 14px; color: var(--text);
+    border-bottom: 1px solid var(--border); border-right: 1px solid var(--border);
+    text-align: center; font-weight: 300;
+  }
+  .compare-table td:first-child { text-align: left; font-weight: 500; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: rgba(244,247,249,0.6); }
+  .compare-table td.highlight { background: rgba(2,195,154,0.05); }
+  .compare-table td.highlight.even { background: rgba(2,195,154,0.08); }
+
+  .tick { color: var(--teal2); font-weight: 700; font-size: 16px; }
+  .cross { color: #CBD5E0; font-size: 16px; }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1000px) {
+    .hero-visual { display: none; }
+    .hero-content { max-width: 100%; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+    .steps-grid::after { display: none; }
+  }
+
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .pricing-grid, .testimonials-grid, .features-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .hero-stats { flex-direction: column; gap: 20px; }
+    .footer-links { gap: 28px; }
+    .compare-table { font-size: 12px; }
+    .compare-table th, .compare-table td { padding: 12px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-icon">⚡</div>
+    GSTZap
+  </a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#compare">Compare</a>
+    <a href="#waitlist" class="nav-cta">Start free →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Now in beta · Join 500+ businesses
+    </div>
+    <h1>GST returns.<br>Done in <span>minutes.</span></h1>
+    <p class="hero-sub">Upload your invoices — Excel, CSV, or Tally — and GSTZap automatically generates your GSTR-1 & GSTR-3B, reconciles your ITC, and flags every mismatch before you file.</p>
+    <div class="hero-cta-row">
+      <a href="#waitlist" class="btn-primary">
+        Start free trial →
+      </a>
+      <a href="#how" class="btn-ghost">
+        See how it works ↓
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">1.4Cr+</span>
+        <span class="stat-lbl">GST businesses in India</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">80%</span>
+        <span class="stat-lbl">less time vs manual filing</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">₹499</span>
+        <span class="stat-lbl">starting price per month</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard preview -->
+  <div class="hero-visual">
+    <div class="dashboard-card">
+      <div class="dash-header">
+        <span class="dash-title">May 2026 — GSTR-3B</span>
+        <span class="dash-badge">READY TO FILE</span>
+      </div>
+      <div class="dash-row">
+        <span class="dash-label">Outward taxable supplies</span>
+        <span class="dash-val">₹8,42,500</span>
+      </div>
+      <div class="dash-row">
+        <span class="dash-label">Total tax liability</span>
+        <span class="dash-val">₹1,51,650</span>
+      </div>
+      <div class="dash-row">
+        <span class="dash-label">ITC available (GSTR-2B)</span>
+        <span class="dash-val green">₹98,230</span>
+      </div>
+      <div class="dash-row">
+        <span class="dash-label">ITC mismatches found</span>
+        <span class="dash-val amber">3 invoices</span>
+      </div>
+      <div class="dash-row">
+        <span class="dash-label">Net tax payable</span>
+        <span class="dash-val">₹53,420</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+      <div class="progress-lbl">
+        <span>Reconciliation complete</span>
+        <span>73% ITC utilised</span>
+      </div>
+      <div class="mini-cards">
+        <div class="mini-card">
+          <div class="mini-card-val">847</div>
+          <div class="mini-card-lbl">Invoices processed</div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-val">2m 14s</div>
+          <div class="mini-card-lbl">Time to generate</div>
+        </div>
+      </div>
+    </div>
+    <div class="floating-notif">⚡ Report ready — file now</div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div style="text-align:center; margin-bottom: 64px;">
+    <span class="section-tag reveal">How it works</span>
+    <h2 class="section-title reveal" style="text-align:center; margin:0 auto 16px;">From invoice to filed return<br>in four steps</h2>
+    <p class="section-sub reveal" style="margin: 0 auto; text-align:center;">No accounting knowledge needed. No complicated software. Just upload and GSTZap handles the rest.</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Upload your data</h3>
+      <p>Drag and drop your sales & purchase files — Excel, CSV, Tally XML, or e-invoice JSON. We auto-detect the format.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Auto-reconcile ITC</h3>
+      <p>GSTZap fetches your GSTR-2B from the portal and matches it against your purchase register. Mismatches are flagged instantly.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Review & approve</h3>
+      <p>See a clean summary of your GSTR-1 and GSTR-3B. Fix any flagged issues with one click before generating.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>Export or file</h3>
+      <p>Download the portal-ready JSON file or export a CA-ready PDF. One-click GST portal filing coming soon via GSP.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div style="max-width: 600px; margin-bottom: 56px;">
+    <span class="section-tag">Features</span>
+    <h2 class="section-title">Everything your CA<br>wishes you already had</h2>
+    <p class="section-sub">Built for two types of users — the shop owner who just wants returns done, and the CA who manages 50 clients at once.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📤</div>
+      <h3>Smart data import</h3>
+      <p>Accepts Excel, CSV, Tally XML, and e-invoice JSON. Auto-detects column names, skips duplicates, handles messy data without errors.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <h3>Auto GSTR-1 & GSTR-3B</h3>
+      <p>Generates both returns automatically from your invoice data. HSN-wise summary, B2B/B2C split, all tax heads computed correctly.</p>
+      <span class="feature-tag">CORE FEATURE</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔁</div>
+      <h3>ITC reconciliation engine</h3>
+      <p>Fetches GSTR-2B from the portal and matches it against your purchase register. Flags unclaimed ITC and supplier mismatches.</p>
+      <span class="feature-tag">SAVES MONEY</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">👥</div>
+      <h3>CA multi-client portal</h3>
+      <p>Manage all your clients from one dashboard. Assign tasks, track filing status, set deadlines — designed for CA firms with 20–200 clients.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔔</div>
+      <h3>WhatsApp & email alerts</h3>
+      <p>Never miss a GST due date again. Automatic reminders for GSTR-1, GSTR-3B, GSTR-9 — sent via WhatsApp, email, or SMS.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <h3>Audit trail & security</h3>
+      <p>Every change is logged with timestamp and user. Your data is encrypted at rest on Cloudflare R2 storage. Always audit-ready.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="comparison-section" id="compare">
+  <div style="text-align:center; margin-bottom: 48px;">
+    <span class="section-tag reveal">Why GSTZap</span>
+    <h2 class="section-title reveal" style="text-align:center; margin: 0 auto 12px;">The only tool that's simple<br>AND powerful</h2>
+    <p class="section-sub reveal" style="margin: 0 auto; text-align:center;">Every alternative makes you choose between simple or feature-rich. GSTZap gives you both.</p>
+  </div>
+
+  <div class="reveal">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>ClearTax</th>
+        <th>Vyapar</th>
+        <th>Tally</th>
+        <th class="highlight">GSTZap ⚡</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Monthly pricing</td>
+        <td>₹3,333/mo</td>
+        <td>₹150/mo</td>
+        <td>₹1,875/mo</td>
+        <td class="highlight"><strong>₹499/mo</strong></td>
+      </tr>
+      <tr>
+        <td>Works on mobile</td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="cross">✗</span></td>
+        <td class="highlight even"><span class="tick">✓</span></td>
+      </tr>
+      <tr>
+        <td>ITC reconciliation</td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="tick">✓</span></td>
+        <td class="highlight"><span class="tick">✓</span></td>
+      </tr>
+      <tr>
+        <td>CA multi-client portal</td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="cross">✗</span></td>
+        <td class="highlight even"><span class="tick">✓</span></td>
+      </tr>
+      <tr>
+        <td>Simple for non-accountants</td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="cross">✗</span></td>
+        <td class="highlight"><span class="tick">✓</span></td>
+      </tr>
+      <tr>
+        <td>WhatsApp reminders</td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="cross">✗</span></td>
+        <td class="highlight even"><span class="tick">✓</span></td>
+      </tr>
+      <tr>
+        <td>No desktop install needed</td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="cross">✗</span></td>
+        <td class="highlight"><span class="tick">✓</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div style="text-align:center; margin-bottom: 56px;">
+    <span class="section-tag reveal">Pricing</span>
+    <h2 class="section-title reveal" style="text-align:center; margin: 0 auto 12px;">Honest pricing.<br>No surprises.</h2>
+    <p class="section-sub reveal" style="margin: 0 auto; text-align:center;">Start for free. Upgrade when your business grows. Cancel any time — no lock-ins, no annual commitments forced.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-who">Small businesses & freelancers</div>
+      <div class="plan-price">
+        <span class="currency">₹</span>
+        <span class="amount">499</span>
+      </div>
+      <div class="plan-period">per month · 1 GSTIN</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>GSTR-1 & GSTR-3B generation</li>
+        <li>CSV & Excel upload</li>
+        <li>PDF & JSON export</li>
+        <li>Email reminders for due dates</li>
+        <li>Up to 500 invoices/month</li>
+      </ul>
+      <a href="#waitlist" class="plan-btn outline">Get started free</a>
+    </div>
+
+    <div class="price-card popular">
+      <div class="popular-tag">MOST POPULAR</div>
+      <div class="plan-name">Professional</div>
+      <div class="plan-who">Growing SMBs & traders</div>
+      <div class="plan-price">
+        <span class="currency">₹</span>
+        <span class="amount">999</span>
+      </div>
+      <div class="plan-period">per month · up to 3 GSTINs</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Everything in Starter</li>
+        <li>ITC reconciliation (GSTR-2B)</li>
+        <li>Tally & ERP import</li>
+        <li>WhatsApp reminders</li>
+        <li>Mismatch alerts & reports</li>
+        <li>Unlimited invoices</li>
+      </ul>
+      <a href="#waitlist" class="plan-btn filled">Start free trial →</a>
+    </div>
+
+    <div class="price-card">
+      <div class="plan-name">CA Firm</div>
+      <div class="plan-who">Chartered accountants & tax firms</div>
+      <div class="plan-price">
+        <span class="currency">₹</span>
+        <span class="amount">2,999</span>
+      </div>
+      <div class="plan-period">per month · up to 50 GSTINs</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Everything in Professional</li>
+        <li>Multi-client dashboard</li>
+        <li>Bulk filing & task assignment</li>
+        <li>Client-facing portal</li>
+        <li>GSTR-9 annual returns</li>
+        <li>Priority support & onboarding</li>
+      </ul>
+      <a href="#waitlist" class="plan-btn outline">Contact sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div style="text-align:center; margin-bottom: 52px;">
+    <span class="section-tag reveal">Testimonials</span>
+    <h2 class="section-title reveal" style="text-align:center; margin: 0 auto 0;">What our beta users say</h2>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-quote">I used to spend 2 days every month on GST. Now I upload my Tally export and the return is ready in minutes. My CA couldn't believe it.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">RK</div>
+        <div>
+          <div class="author-name">Rajesh Kumar</div>
+          <div class="author-role">Textile trader, Surat</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-quote">The ITC reconciliation feature alone is worth it. I recovered ₹45,000 in unclaimed ITC in the first month that I had been missing for 6 months.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">PS</div>
+        <div>
+          <div class="author-name">Priya Sharma, CA</div>
+          <div class="author-role">CA firm, Gurugram</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-quote">Managing 35 clients used to need 3 people in my firm. With GSTZap's CA portal I do it alone. The WhatsApp reminders mean I never miss a deadline.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AM</div>
+        <div>
+          <div class="author-name">Amit Mehta, CA</div>
+          <div class="author-role">Tax consultant, Mumbai</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="waitlist">
+  <span class="section-tag">Get early access</span>
+  <h2 class="section-title" style="max-width:580px; margin:0 auto;">Start filing smarter today</h2>
+  <p class="section-sub">Join the waitlist for free early access. No credit card needed. 14-day free trial for all plans.</p>
+
+  <div class="cta-input-row">
+    <input type="email" class="cta-input" placeholder="Enter your email or phone" id="email-input">
+    <button class="btn-primary" onclick="handleSignup()">Get early access →</button>
+  </div>
+  <p class="cta-note" id="signup-note">Join 500+ businesses already on the waitlist</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">
+        <div class="logo-icon">⚡</div>
+        GSTZap
+      </a>
+      <p class="footer-tagline">India's simplest GST return and reconciliation platform. Built for businesses, loved by CAs.</p>
+    </div>
+
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#how">How it works</a>
+        <a href="#">API docs</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy policy</a>
+        <a href="#">Terms of service</a>
+        <a href="#">GST compliance</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 GSTZap Technologies Pvt. Ltd. All rights reserved.</span>
+    <span class="footer-gstin">Made in India 🇮🇳 · Powered by Cloudflare Workers</span>
+  </div>
+</footer>
+
+<script>
+  // Intersection observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Stagger children if step/feature
+        const children = entry.target.querySelectorAll('.step, .feature-card, .price-card, .testimonial');
+        children.forEach((child, i) => {
+          setTimeout(() => child.classList.add('visible'), i * 100);
+        });
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal, .steps-grid, .features-grid, .pricing-grid, .testimonials-grid').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Also observe individual cards directly
+  document.querySelectorAll('.step, .feature-card, .price-card, .testimonial').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Signup handler
+  function handleSignup() {
+    const input = document.getElementById('email-input');
+    const note = document.getElementById('signup-note');
+    if (input.value.trim()) {
+      input.value = '';
+      note.textContent = '🎉 You\'re on the list! We\'ll be in touch soon.';
+      note.style.color = '#02C39A';
+    } else {
+      input.style.borderColor = '#FC8181';
+      input.placeholder = 'Please enter your email or phone';
+      setTimeout(() => {
+        input.style.borderColor = '';
+        input.placeholder = 'Enter your email or phone';
+      }, 2000);
+    }
+  }
+
+  // Enter key on input
+  document.getElementById('email-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleSignup();
+  });
+
+  // Smooth nav highlight on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 100) current = sec.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.style.color = link.getAttribute('href') === '#' + current
+        ? 'var(--teal2)'
+        : 'rgba(255,255,255,0.7)';
+    });
+  });
+</script>
+</body>
+</html>
