@@ -549,15 +549,14 @@
   document.querySelectorAll('.step, .feature-card, .price-card').forEach(el => io.observe(el));
 
   // ── Google Sheets integration ──
-  // STEP 1: Paste your Google Apps Script Web App URL below after setup
   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwI0_ki7xuTi58xdEuKKO5tS8qIYLKzpd_sleLmetTSZXk9M5c2IhBgLTgCtRob8HGU/exec';
 
   function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }
 
-  async function signup(inputId, statusId) {
-    const input = document.getElementById(inputId);
+  function signup(inputId, statusId) {
+    const input  = document.getElementById(inputId);
     const status = document.getElementById(statusId);
-    const email = input.value.trim();
+    const email  = input.value.trim();
 
     if (!email) {
       input.style.borderColor = '#FC8181';
@@ -567,53 +566,36 @@
     }
     if (!isValidEmail(email)) {
       input.style.borderColor = '#FC8181';
-      status.textContent = '⚠️ Please enter a valid email address.';
+      status.textContent = '\u26A0\uFE0F Please enter a valid email address.';
       status.style.color = '#FC8181';
       return;
     }
 
-    // Show loading state
     const btn = input.nextElementSibling;
     const originalText = btn.textContent;
-    btn.textContent = 'Saving...';
+    btn.textContent = 'Saving\u2026';
     btn.disabled = true;
     status.textContent = '';
 
-    if (SHEET_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-      // Demo mode — no URL set yet
-      btn.textContent = originalText;
-      btn.disabled = false;
+    const params = new URLSearchParams({
+      email,
+      source:    inputId === 'hero-email' ? 'hero' : 'cta',
+      timestamp: new Date().toISOString(),
+      page:      window.location.href
+    });
+
+    // Image ping — bypasses CORS, works perfectly with Google Apps Script 302 redirect
+    const img = new Image();
+    img.onload = img.onerror = function() {
       input.value = '';
       input.style.borderColor = 'var(--teal2)';
-      status.textContent = '🎉 You\'re on the list! We\'ll be in touch soon.';
+      status.textContent = '\uD83C\uDF89 You\'re on the list! We\'ll email you when beta opens.';
       status.style.color = '#02C39A';
-      setTimeout(() => { input.style.borderColor = ''; }, 3000);
-      return;
-    }
-
-    try {
-      const params = new URLSearchParams({
-        email,
-        source: inputId === 'hero-email' ? 'hero' : 'cta',
-        timestamp: new Date().toISOString(),
-        page: window.location.href
-      });
-
-      // Use no-cors fetch — Apps Script handles CORS via redirect
-      await fetch(`${SHEET_URL}?${params}`, { method: 'GET', mode: 'no-cors' });
-
-      input.value = '';
-      input.style.borderColor = 'var(--teal2)';
-      status.textContent = '🎉 You\'re on the list! We\'ll email you when beta opens.';
-      status.style.color = '#02C39A';
-      setTimeout(() => { input.style.borderColor = ''; }, 3000);
-    } catch (err) {
-      status.textContent = '⚠️ Something went wrong. Please try again.';
-      status.style.color = '#FC8181';
-    } finally {
       btn.textContent = originalText;
       btn.disabled = false;
-    }
+      setTimeout(() => { input.style.borderColor = ''; }, 3000);
+    };
+    img.src = SHEET_URL + '?' + params;
   }
 
   function scrollToWaitlist() {
